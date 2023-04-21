@@ -1,15 +1,13 @@
 import clsx from 'clsx';
 import { useState } from 'react';
 import { HiPlus } from 'react-icons/hi';
-
 import { useLocalStorage } from '@/hooks';
+import { generateAccount } from '../utils/AccountUtils';
 
 import Button from '@/components/buttons/Button';
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
 import Seo from '@/components/Seo';
-
-import { generateAccount } from '../utils/AccountUtils';
 
 export default function WalletsPage() {
   const [accountList, setAccountList] = useLocalStorage('WALLET_ACCOUNTS', {});
@@ -69,7 +67,10 @@ export default function WalletsPage() {
                               <div>{accountList[key]}</div>
                             </ArrowLink>
                           </div>
-                          <div>0x511B6...BaAC753E</div>
+                          <div>
+                            {key.substring(0, 6)}...
+                            {key.substring(key.length - 6)}
+                          </div>
                         </div>
                       ))}
                     </div>
