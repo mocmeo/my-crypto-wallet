@@ -1,28 +1,34 @@
 import clsx from 'clsx';
-import * as React from 'react';
+import { useState } from 'react';
 import { HiPlus } from 'react-icons/hi';
+
+import { useLocalStorage } from '@/hooks';
 
 import Button from '@/components/buttons/Button';
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
 import Seo from '@/components/Seo';
 
-import { colorList } from '@/constant';
+import { generateAccount } from '../utils/AccountUtils';
 
-type Color = (typeof colorList)[number];
+export default function WalletsPage() {
+  const [accountList, setAccountList] = useLocalStorage('WALLET_ACCOUNTS', {});
+  const [newWalletName, setNewWalletName] = useState('');
 
-export default function ComponentsPage() {
-  const [color, setColor] = React.useState<Color>('sky');
+  async function confirmAccount(walletName: string) {
+    const result = await generateAccount();
+    setAccountList({
+      ...accountList,
+      [result.account.address]: walletName,
+    });
+  }
 
   return (
     <Layout>
-      <Seo
-        templateTitle='Components'
-        description='Pre-built components with awesome default'
-      />
+      <Seo templateTitle='Wallets' description='Crypto Wallets' />
 
       <main>
-        <section className={clsx('bg-white', color)}>
+        <section className='bg-white'>
           <div className='layout min-h-screen py-20 text-black'>
             <h1>Wallets</h1>
             <ArrowLink direction='left' className='mb-3 mt-2' href='/'>
@@ -33,16 +39,20 @@ export default function ComponentsPage() {
               <input
                 name='walletName'
                 id='walletName'
-                value={color}
                 className={clsx(
                   'block max-w-xs rounded border',
                   'border-gray-300 bg-white',
                   'focus:border-primary-400 focus:ring-primary-400 pl-2 focus:outline-none focus:ring'
                 )}
                 placeholder='Wallet name'
-                onChange={(e) => setColor(e.target.value as Color)}
+                value={newWalletName}
+                onChange={(e) => setNewWalletName(e.target.value)}
               ></input>
-              <Button variant='primary' leftIcon={HiPlus}>
+              <Button
+                variant='primary'
+                leftIcon={HiPlus}
+                onClick={() => confirmAccount(newWalletName)}
+              >
                 Create wallet
               </Button>
             </div>
@@ -50,26 +60,20 @@ export default function ComponentsPage() {
             <div className='mt-8 space-y-12'>
               <div className='space-y-2'>
                 <div className='flex flex-col'>
-                  <div>
-                    <div className='mb-2 flex flex-col'>
-                      <div>
-                        <ArrowLink href='/'>
-                          <b>Wallet 1</b>
-                        </ArrowLink>
-                      </div>
-                      <span>0x511B6...BaAC753E</span>
+                  {accountList && (
+                    <div>
+                      {Object.keys(accountList).map((key) => (
+                        <div className='mb-2 flex flex-col' key={key}>
+                          <div>
+                            <ArrowLink href='/'>
+                              <div>{accountList[key]}</div>
+                            </ArrowLink>
+                          </div>
+                          <div>0x511B6...BaAC753E</div>
+                        </div>
+                      ))}
                     </div>
-
-                    <div className='mb-2 flex flex-col'>
-                      <div>
-                        <ArrowLink href='/'>
-                          <b>Wallet 2</b>
-                        </ArrowLink>
-                      </div>
-
-                      <span>0x511B6...BaAC753E</span>
-                    </div>
-                  </div>
+                  )}
                 </div>
               </div>
             </div>
