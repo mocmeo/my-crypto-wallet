@@ -14,11 +14,19 @@ export default function WalletsPage() {
   const [newWalletName, setNewWalletName] = useState('');
 
   async function confirmAccount(walletName: string) {
+    if (walletName.trim().length === 0) return;
+
     const result = await generateAccount();
     setAccountList({
       ...accountList,
       [result.account.address]: walletName,
     });
+  }
+
+  async function removeAccount(key: string) {
+    const newAccountList = { ...accountList };
+    delete newAccountList[key];
+    setAccountList(newAccountList);
   }
 
   return (
@@ -27,7 +35,7 @@ export default function WalletsPage() {
 
       <main>
         <section className='bg-white'>
-          <div className='layout min-h-screen py-20 text-black'>
+          <div className='layout py-20 text-black'>
             <h1>Wallets</h1>
             <ArrowLink direction='left' className='mb-3 mt-2' href='/'>
               Back to Home
@@ -61,15 +69,30 @@ export default function WalletsPage() {
                   {accountList && (
                     <div>
                       {Object.keys(accountList).map((key) => (
-                        <div className='mb-2 flex flex-col' key={key}>
-                          <div>
-                            <ArrowLink href='/'>
-                              <div>{accountList[key]}</div>
-                            </ArrowLink>
+                        <div
+                          className='mb-2 flex flex-row justify-between'
+                          key={key}
+                        >
+                          <div className='info'>
+                            <div className='flex flex-col'>
+                              <ArrowLink href={`/wallet/${key}`}>
+                                <div>{accountList[key]}</div>
+                              </ArrowLink>
+                            </div>
+                            <div>
+                              {key.substring(0, 6)}...
+                              {key.substring(key.length - 6)}
+                            </div>
                           </div>
-                          <div>
-                            {key.substring(0, 6)}...
-                            {key.substring(key.length - 6)}
+                          <div className='actions flex flex-row'>
+                            <div
+                              className='mr-2 cursor-pointer'
+                              onClick={() => {
+                                removeAccount(key);
+                              }}
+                            >
+                              Remove
+                            </div>
                           </div>
                         </div>
                       ))}

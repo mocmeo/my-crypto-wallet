@@ -9,8 +9,6 @@ export async function sendToken(
   privateKey: string
 ) {
   const chain = CHAINS_CONFIG[goerli.chainId];
-
-  // Create a provider using the Infura RPC URL for Goerli
   const provider = new ethers.providers.JsonRpcProvider(chain.rpcUrl);
 
   // Create a wallet instance from the sender's private key
