@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import clsx from 'clsx';
 
 import Button from '@/components/buttons/Button';
@@ -6,6 +6,9 @@ import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 
 export default function SettingsPage() {
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+
   return (
     <Layout>
       <Seo />
@@ -23,8 +26,8 @@ export default function SettingsPage() {
                   'focus:border-primary-400 focus:ring-primary-400 pl-2 focus:outline-none focus:ring'
                 )}
                 placeholder='Old password'
-                value={''}
-                // onChange={(e) => setNewWalletName(e.target.value)}
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.target.value)}
               ></input>
               <input
                 name='newPassword'
@@ -35,8 +38,8 @@ export default function SettingsPage() {
                   'focus:border-primary-400 focus:ring-primary-400 pl-2 focus:outline-none focus:ring'
                 )}
                 placeholder='New password'
-                value={''}
-                // onChange={(e) => setNewWalletName(e.target.value)}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
               ></input>
               <Button variant='primary' onClick={() => {}}>
                 Update

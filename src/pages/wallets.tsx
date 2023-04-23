@@ -23,9 +23,9 @@ export default function WalletsPage() {
     });
   }
 
-  async function removeAccount(key: string) {
+  async function removeAccount(address: string) {
     const newAccountList = { ...accountList };
-    delete newAccountList[key];
+    delete newAccountList[address];
     setAccountList(newAccountList);
   }
 

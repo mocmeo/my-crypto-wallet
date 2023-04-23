@@ -4,7 +4,6 @@ import { useLocalStorage } from '@/hooks';
 import { ethers } from 'ethers';
 import { goerli } from '@/models/Chain';
 import { toFixedIfNecessary } from '@/utils/AccountUtils';
-import { isClient } from '@/utils';
 
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
