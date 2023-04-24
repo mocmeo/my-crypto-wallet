@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { useState } from 'react';
 import { HiPlus } from 'react-icons/hi';
 import { useLocalStorage } from '@/hooks';
-import { generateAccount } from '../utils/AccountUtils';
+import { generateAccount, shortenAddress } from '@/utils/account';
 
 import Button from '@/components/buttons/Button';
 import Layout from '@/components/layout/Layout';
@@ -19,7 +19,10 @@ export default function WalletsPage() {
     const result = await generateAccount();
     setAccountList({
       ...accountList,
-      [result.account.address]: walletName,
+      [result.account.address]: {
+        walletName,
+        seedPhrase: result.seedPhrase,
+      },
     });
   }
 
@@ -76,13 +79,10 @@ export default function WalletsPage() {
                           <div className='info'>
                             <div className='flex flex-col'>
                               <ArrowLink href={`/wallet/${key}`}>
-                                <div>{accountList[key]}</div>
+                                <div>{accountList[key].walletName}</div>
                               </ArrowLink>
                             </div>
-                            <div>
-                              {key.substring(0, 6)}...
-                              {key.substring(key.length - 6)}
-                            </div>
+                            <div>{shortenAddress(key, 6)}</div>
                           </div>
                           <div className='actions flex flex-row'>
                             <div

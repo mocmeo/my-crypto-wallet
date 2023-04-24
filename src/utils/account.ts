@@ -1,6 +1,5 @@
 import { Wallet } from 'ethers';
-
-import { Account } from '../models/Account';
+import { Account } from '@/models/Account';
 
 export function generateAccount(
   seedPhrase = '',
