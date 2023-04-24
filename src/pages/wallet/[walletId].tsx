@@ -27,7 +27,7 @@ export default function WalletPage() {
     const fetchData = async () => {
       if (walletId) {
         const provider = new ethers.providers.JsonRpcProvider(goerli.rpcUrl);
-        let accountBalance = await provider.getBalance(walletId.toString());
+        const accountBalance = await provider.getBalance(walletId.toString());
         setBalance(
           toFixedIfNecessary(ethers.utils.formatEther(accountBalance))
         );
